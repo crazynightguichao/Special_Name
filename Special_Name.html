@@ -1,0 +1,132 @@
+<!--
+ * @Author: jiaguichao
+ * @Date: 2021-12-28 15:04:08
+ * @LastEditTime: 2021-12-29 10:37:44
+ * @Description: 特效文字
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>特效文字</title>
+    
+</head>
+<body>
+<div style="color: aliceblue;" class="h2Color">
+    name: <input id="selectName" type="text" name="firstname"><br>
+    color: <input id="selectColor" value="#ffffff" type="color" name="favcolor">
+    <button style="width: 60px;font-weight: 800;margin-left: 50px;" onclick="submitClick()">Y E S</button>
+</div>
+<div id="showName"></div>
+
+<svg width="0">
+    <filter id="filter">
+      <feTurbulence id="turbulence" type="fractalNoise" baseFrequency=".03" numOctaves="20" />
+      <feDisplacementMap in="SourceGraphic" scale="30" />
+    </filter>
+</svg>
+<svg width="0">
+    <filter id="filter2">
+      <feTurbulence id="turbulence2" type="fractalNoise" baseFrequency=".03" numOctaves="20" />
+      <feDisplacementMap in="SourceGraphic" scale="5" />
+    </filter>
+</svg>
+
+</body>
+<script type="text/javascript">
+window.onload=function(){
+    // window.name='你的名字'
+    // document.getElementById('showName').value = name;
+    var textNode = document.createTextNode("你的名字");
+    var divNode = document.getElementById("showName");
+    divNode.appendChild(textNode);
+}
+// 烟雾化方法1
+const filter = document.querySelector("#turbulence");
+let frames = 1;
+let rad = Math.PI / 180;
+let bfx, bfy;
+function freqAnimation() {
+    frames += .2
+
+    bfx = 0.03;
+    bfy = 0.03;
+
+    bfx += 0.005 * Math.cos(frames * rad);
+    bfy += 0.005 * Math.sin(frames * rad);
+
+    bf = bfx.toString() + " " + bfy.toString();
+    filter.setAttributeNS(null, "baseFrequency", bf);
+
+    window.requestAnimationFrame(freqAnimation);
+}
+window.requestAnimationFrame(freqAnimation);
+// 烟雾化方法2
+const filter2 = document.querySelector("#turbulence2");
+let frames2 = 1;
+let rad2 = Math.PI / 180;
+let bfx2, bfy2;
+function freqAnimation2() {
+    frames2 += .2
+
+    bfx2 = 0.03;
+    bfy2 = 0.03;
+
+    bfx2 += 0.005 * Math.cos(frames2 * rad2);
+    bfy2 += 0.005 * Math.sin(frames2 * rad2);
+
+    bf2 = bfx2.toString() + " " + bfy2.toString();
+    filter2.setAttributeNS(null, "baseFrequency", bf2);
+
+    window.requestAnimationFrame(freqAnimation2);
+}
+window.requestAnimationFrame(freqAnimation2);
+// 确认
+function submitClick(){
+    document.getElementById("showName").innerHTML = '';
+    let colorVal = document.getElementById('selectColor').value;
+    let nameVal = document.getElementById('selectName').value;
+    let nameVall = document.createTextNode(nameVal)
+    document.getElementById("showName").appendChild(nameVall);
+    document.getElementById('showName').style.color = colorVal;
+    // console.log(nameVal,'输入值');
+    // console.log(colorVal,'选中颜色值');
+}
+</script>
+<style >
+body, html {
+    width: 98%;
+    height: 95%;
+    /* display: flex; */
+    background: #000;
+}
+
+/* body {
+    filter: url('#filter');
+} */
+.h2Color{
+    width: 90vw;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 100;
+    font-size: 6vmin;  
+    filter: url('#filter2');
+}
+#showName {
+    width: 70vw;
+    height: 70vh;
+    margin: auto;
+    /* background: linear-gradient(#fff, #999, #ddd, #888); */
+    /* background-clip: text; */
+    color: rgb(242, 243, 237);
+    font-size: 30vmin;
+    text-align: center;
+    line-height: 90vh;
+    /* filter: blur(6px) contrast(120%); */
+    filter: blur(6px) contrast(120%) url('#filter');
+}
+</style>
+</html>
